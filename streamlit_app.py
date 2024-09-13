@@ -50,6 +50,29 @@ if "df" not in st.session_state:
         "Customer data not loading in CRM",
         "Collaboration tool not sending notifications",
     ]
+# Display the DataFrame with sorting and filtering capabilities
+st.dataframe(st.session_state.df, use_container_width=True, hide_index=True)
+
+# Add sorting and filtering widgets
+sort_column = st.selectbox("Sort by", st.session_state.df.columns)
+sort_order = st.selectbox("Sort order", ["Ascending", "Descending"])
+filter_column = st.selectbox("Filter by", st.session_state.df.columns)
+filter_value = st.text_input(f"Enter {filter_column} value to filter")
+
+# Apply sorting
+if sort_order == "Ascending":
+    sorted_df = st.session_state.df.sort_values(by=sort_column, ascending=True)
+else:
+    sorted_df = st.session_state.df.sort_values(by=sort_column, ascending=False)
+
+# Apply filtering
+if filter_value:
+    filtered_df = sorted_df[sorted_df[filter_column] == filter_value]
+else:
+    filtered_df = sorted_df
+
+# Display the sorted and filtered DataFrame
+st.dataframe(filtered_df, use_container_width=True, hide_index=True)
 
 edited_df = st.data_editor(
     st.session_state.df,
