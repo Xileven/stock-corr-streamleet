@@ -23,7 +23,7 @@ st.write(
 )
 
 # Read data from the provided URL
-url = "https://storage.cloud.google.com/streamleet-data-bucket/corr_data.csv"
+url = "gs://streamleet-data-bucket/corr_data.csv"
 
 try:
     st.session_state.df = pd.read_csv(url)
