@@ -24,7 +24,12 @@ st.write(
 
 # Read data from the provided URL
 url = "https://storage.cloud.google.com/streamleet-data-bucket/corr_data.parquet"
-st.session_state.df = pd.read_parquet(url)
+
+try:
+    st.session_state.df = pd.read_parquet(url)
+except Exception as e:
+    st.error(f"Error reading Parquet file: {e}")
+    st.session_state.df = pd.DataFrame()  # Initialize with an empty DataFrame
 
 if "df" not in st.session_state:
     # Make up some fake issue descriptions.
@@ -50,6 +55,7 @@ if "df" not in st.session_state:
         "Customer data not loading in CRM",
         "Collaboration tool not sending notifications",
     ]
+
 # Display the DataFrame with sorting and filtering capabilities
 st.dataframe(st.session_state.df, use_container_width=True, hide_index=True)
 
@@ -73,7 +79,6 @@ else:
 
 # Display the sorted and filtered DataFrame
 st.dataframe(filtered_df, use_container_width=True, hide_index=True)
-
 edited_df = st.data_editor(
     st.session_state.df,
     use_container_width=True,
