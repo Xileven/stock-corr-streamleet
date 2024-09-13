@@ -23,12 +23,12 @@ st.write(
 )
 
 # Read data from the provided URL
-url = "https://storage.cloud.google.com/streamleet-data-bucket/corr_data.parquet"
+url = "https://storage.cloud.google.com/streamleet-data-bucket/corr_data.csv"
 
 try:
-    st.session_state.df = pd.read_parquet(url)
+    st.session_state.df = pd.read_csv(url)
 except Exception as e:
-    st.error(f"Error reading Parquet file: {e}")
+    st.error(f"Error reading CSV file: {e}")
     st.session_state.df = pd.DataFrame()  # Initialize with an empty DataFrame
 
 if "df" not in st.session_state:
