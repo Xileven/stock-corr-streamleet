@@ -47,8 +47,8 @@ def get_corr_data():
         return pd.DataFrame()
     # df = raw_corr_df.copy()
 
-    MIN_YEAR = 0
-    MAX_YEAR = 5
+    # MIN_YEAR = 0
+    # MAX_YEAR = 5
 
     import pandas as pd
 
@@ -139,115 +139,115 @@ if "df" not in st.session_state:
     ]
 
 
-# Display the DataFrame with sorting and filtering capabilities
-st.dataframe(st.session_state.df, use_container_width=True, hide_index=True)
+# # Display the DataFrame with sorting and filtering capabilities
+# st.dataframe(st.session_state.df, use_container_width=True, hide_index=True)
 
-# Add sorting and filtering widgets
-sort_column = st.selectbox("Sort by", st.session_state.df.columns)
-sort_order = st.selectbox("Sort order", ["Ascending", "Descending"])
-filter_column = st.selectbox("Filter by", st.session_state.df.columns)
-filter_value = st.text_input(f"Enter {filter_column} value to filter")
+# # Add sorting and filtering widgets
+# sort_column = st.selectbox("Sort by", st.session_state.df.columns)
+# sort_order = st.selectbox("Sort order", ["Ascending", "Descending"])
+# filter_column = st.selectbox("Filter by", st.session_state.df.columns)
+# filter_value = st.text_input(f"Enter {filter_column} value to filter")
 
-# Apply sorting
-if sort_order == "Ascending":
-    sorted_df = st.session_state.df.sort_values(by=sort_column, ascending=True)
-else:
-    sorted_df = st.session_state.df.sort_values(by=sort_column, ascending=False)
+# # Apply sorting
+# if sort_order == "Ascending":
+#     sorted_df = st.session_state.df.sort_values(by=sort_column, ascending=True)
+# else:
+#     sorted_df = st.session_state.df.sort_values(by=sort_column, ascending=False)
 
-# Apply filtering
-if filter_value:
-    filtered_df = sorted_df[sorted_df[filter_column] == filter_value]
-else:
-    filtered_df = sorted_df
+# # Apply filtering
+# if filter_value:
+#     filtered_df = sorted_df[sorted_df[filter_column] == filter_value]
+# else:
+#     filtered_df = sorted_df
 
-# Display the sorted and filtered DataFrame
-st.dataframe(filtered_df, use_container_width=True, hide_index=True)
-edited_df = st.data_editor(
-    st.session_state.df,
-    use_container_width=True,
-    hide_index=True,
-    column_config={
-        "DATA_DUMP_DATE": st.column_config.DatetimeColumn(
-            "Data Dump Date",
-            help="Date when the data was dumped",
-            format="YYYY-MM-DD",
-        ),
-        "corr_calc_days": st.column_config.NumberColumn(
-            "Correlation Calculation Days",
-            help="Number of days used for correlation calculation",
-        ),
-        "ticker_1": st.column_config.TextColumn(
-            "Ticker 1",
-            help="First ticker symbol",
-        ),
-        "ticker_2": st.column_config.TextColumn(
-            "Ticker 2",
-            help="Second ticker symbol",
-        ),
-        "close_correlation": st.column_config.NumberColumn(
-            "Close Correlation",
-            help="Correlation based on closing prices",
-        ),
-        "volume_correlation": st.column_config.NumberColumn(
-            "Volume Correlation",
-            help="Correlation based on trading volumes",
-        ),
-        "beta_1": st.column_config.NumberColumn(
-            "Beta 1",
-            help="Beta value for Ticker 1",
-        ),
-        "beta_2": st.column_config.NumberColumn(
-            "Beta 2",
-            help="Beta value for Ticker 2",
-        ),
-        "beta_diff": st.column_config.NumberColumn(
-            "Beta Difference",
-            help="Difference in beta values",
-        ),
-        "marketCap_1": st.column_config.NumberColumn(
-            "Market Cap 1",
-            help="Market capitalization for Ticker 1",
-        ),
-        "marketCap_2": st.column_config.NumberColumn(
-            "Market Cap 2",
-            help="Market capitalization for Ticker 2",
-        ),
-        "marketCap_diff": st.column_config.NumberColumn(
-            "Market Cap Difference",
-            help="Difference in market capitalization",
-        ),
-        "shortName_1": st.column_config.TextColumn(
-            "Short Name 1",
-            help="Short name for Ticker 1",
-        ),
-        "shortName_2": st.column_config.TextColumn(
-            "Short Name 2",
-            help="Short name for Ticker 2",
-        ),
-        "sector_1": st.column_config.TextColumn(
-            "Sector 1",
-            help="Sector for Ticker 1",
-        ),
-        "sector_2": st.column_config.TextColumn(
-            "Sector 2",
-            help="Sector for Ticker 2",
-        ),
-        "same_sector": st.column_config.CheckboxColumn(
-            "Same Sector",
-            help="Indicates if both tickers are in the same sector",
-        ),
-        "industry_1": st.column_config.TextColumn(
-            "Industry 1",
-            help="Industry for Ticker 1",
-        ),
-        "industry_2": st.column_config.TextColumn(
-            "Industry 2",
-            help="Industry for Ticker 2",
-        ),
-        "same_industry": st.column_config.CheckboxColumn(
-            "Same Industry",
-            help="Indicates if both tickers are in the same industry",
-        ),
-    },
-    disabled=["DATA_DUMP_DATE", "corr_calc_days", "ticker_1", "ticker_2", "close_correlation", "volume_correlation", "beta_1", "beta_2", "beta_diff", "marketCap_1", "marketCap_2", "marketCap_diff", "shortName_1", "shortName_2", "sector_1", "sector_2", "same_sector", "industry_1", "industry_2", "same_industry"],
-)
+# # Display the sorted and filtered DataFrame
+# st.dataframe(filtered_df, use_container_width=True, hide_index=True)
+# edited_df = st.data_editor(
+#     st.session_state.df,
+#     use_container_width=True,
+#     hide_index=True,
+#     column_config={
+#         "DATA_DUMP_DATE": st.column_config.DatetimeColumn(
+#             "Data Dump Date",
+#             help="Date when the data was dumped",
+#             format="YYYY-MM-DD",
+#         ),
+#         "corr_calc_days": st.column_config.NumberColumn(
+#             "Correlation Calculation Days",
+#             help="Number of days used for correlation calculation",
+#         ),
+#         "ticker_1": st.column_config.TextColumn(
+#             "Ticker 1",
+#             help="First ticker symbol",
+#         ),
+#         "ticker_2": st.column_config.TextColumn(
+#             "Ticker 2",
+#             help="Second ticker symbol",
+#         ),
+#         "close_correlation": st.column_config.NumberColumn(
+#             "Close Correlation",
+#             help="Correlation based on closing prices",
+#         ),
+#         "volume_correlation": st.column_config.NumberColumn(
+#             "Volume Correlation",
+#             help="Correlation based on trading volumes",
+#         ),
+#         "beta_1": st.column_config.NumberColumn(
+#             "Beta 1",
+#             help="Beta value for Ticker 1",
+#         ),
+#         "beta_2": st.column_config.NumberColumn(
+#             "Beta 2",
+#             help="Beta value for Ticker 2",
+#         ),
+#         "beta_diff": st.column_config.NumberColumn(
+#             "Beta Difference",
+#             help="Difference in beta values",
+#         ),
+#         "marketCap_1": st.column_config.NumberColumn(
+#             "Market Cap 1",
+#             help="Market capitalization for Ticker 1",
+#         ),
+#         "marketCap_2": st.column_config.NumberColumn(
+#             "Market Cap 2",
+#             help="Market capitalization for Ticker 2",
+#         ),
+#         "marketCap_diff": st.column_config.NumberColumn(
+#             "Market Cap Difference",
+#             help="Difference in market capitalization",
+#         ),
+#         "shortName_1": st.column_config.TextColumn(
+#             "Short Name 1",
+#             help="Short name for Ticker 1",
+#         ),
+#         "shortName_2": st.column_config.TextColumn(
+#             "Short Name 2",
+#             help="Short name for Ticker 2",
+#         ),
+#         "sector_1": st.column_config.TextColumn(
+#             "Sector 1",
+#             help="Sector for Ticker 1",
+#         ),
+#         "sector_2": st.column_config.TextColumn(
+#             "Sector 2",
+#             help="Sector for Ticker 2",
+#         ),
+#         "same_sector": st.column_config.CheckboxColumn(
+#             "Same Sector",
+#             help="Indicates if both tickers are in the same sector",
+#         ),
+#         "industry_1": st.column_config.TextColumn(
+#             "Industry 1",
+#             help="Industry for Ticker 1",
+#         ),
+#         "industry_2": st.column_config.TextColumn(
+#             "Industry 2",
+#             help="Industry for Ticker 2",
+#         ),
+#         "same_industry": st.column_config.CheckboxColumn(
+#             "Same Industry",
+#             help="Indicates if both tickers are in the same industry",
+#         ),
+#     },
+#     disabled=["DATA_DUMP_DATE", "corr_calc_days", "ticker_1", "ticker_2", "close_correlation", "volume_correlation", "beta_1", "beta_2", "beta_diff", "marketCap_1", "marketCap_2", "marketCap_diff", "shortName_1", "shortName_2", "sector_1", "sector_2", "same_sector", "industry_1", "industry_2", "same_industry"],
+# )
