@@ -3,6 +3,7 @@ import pandas as pd
 import math
 from pathlib import Path
 
+
 st.set_page_config(
     page_title="Stocks Correlation", 
     page_icon="📈"
@@ -14,10 +15,7 @@ st.write(
     Correlation between stocks from Yahoo Finance
     """
 )
-import streamlit as st
-import pandas as pd
-import math
-from pathlib import Path
+
 
 # Set the title and favicon that appear in the Browser's tab bar.
 st.set_page_config(
@@ -36,13 +34,11 @@ def get_corr_data():
 
     return raw_corr_df
 
-corr_df = get_corr_data()
+# corr_df = get_corr_data()
 
 
 
 
-import streamlit as st
-import pandas as pd
 
 # Load the data
 # data_path = 'corr_data.csv'  # Update this if needed
