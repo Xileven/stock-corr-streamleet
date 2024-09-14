@@ -1,5 +1,6 @@
 import datetime
 import random
+from pathlib import Path
 
 import altair as alt
 import numpy as np
@@ -14,22 +15,96 @@ import numpy as np
 from yfinance import Ticker 
 import yfinance as yf
 
-st.set_page_config(page_title="Stocks Correlation", page_icon="📈")
+st.set_page_config(
+    page_title="Stocks Correlation", 
+    page_icon="📈"
+)
+
 st.title("📈 Stock Correlation")
 st.write(
     """
     Correlation between stocks from Yahoo Finance
     """
 )
+@st.cache_data
+def get_corr_data():
+    """Grab corr data from a CSV file.
 
-# Read data from the provided URL
-url = "gs://streamleet-data-bucket/corr_data.csv"
+    This uses caching to avoid having to read the file every time. If we were
+    reading from an HTTP endpoint instead of a file, it's a good idea to set 
+    a maximum age to the cache with the TTL argument: @st.cache_data(ttl='1d')
+    """
 
-try:
-    st.session_state.df = pd.read_csv(url)
-except Exception as e:
-    st.error(f"Error reading CSV file: {e}")
-    st.session_state.df = pd.DataFrame()  # Initialize with an empty DataFrame
+    # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
+    DATA_FILENAME = Path(__file__).parent/'data/corr_data.csv'
+    raw_corr_df = pd.read_csv(DATA_FILENAME)
+    # df = raw_corr_df.copy()
+
+    MIN_YEAR = 0
+    MAX_YEAR = 5
+
+    import pandas as pd
+
+    # Assuming the DataFrame is named 'df' and contains all the necessary columns
+
+    # Get the latest DATA_DUMP_DATE
+    latest_date = raw_corr_df['DATA_DUMP_DATE'].max()
+
+    # Filter the DataFrame for the latest date
+    df_latest = raw_corr_df[raw_corr_df['DATA_DUMP_DATE'] == latest_date]
+
+    # Create a dictionary to map corr_calc_days to new column names
+    corr_dict = {
+        10: 'corr_10',
+        22: 'corr_22',
+        45: 'corr_45',
+        66: 'corr_66',
+        125: 'corr_125',
+        250: 'corr_250',
+        500: 'corr_500',
+        1250: 'corr_1250'
+    }
+
+    # Pivot the DataFrame to create columns for each corr_calc_days
+    df_pivoted = df_latest.pivot_table(
+        index=['DATA_DUMP_DATE', 'ticker_1', 'ticker_2'],
+        columns='corr_calc_days',
+        values='close_correlation',
+        aggfunc='first'
+    ).reset_index()
+
+    # Rename the columns
+    df_pivoted.rename(columns=corr_dict, inplace=True)
+
+    # Select and order the columns
+    result = df_pivoted[['DATA_DUMP_DATE', 'ticker_1', 'ticker_2'] + list(corr_dict.values())]
+
+    # Rename DATA_DUMP_DATE to LATEST_DATE
+    result = result.rename(columns={'DATA_DUMP_DATE': 'LATEST_DATE'})
+
+    # Sort the DataFrame
+    result = result.sort_values(['ticker_1', 'ticker_2'])
+
+    # Reset the index if needed
+    corr_df = result.reset_index(drop=True)
+
+    # Display the result
+
+    # corr_df = raw_corr_df.melt(
+    #     ['Country Code'],
+    #     [str(x) for x in range(MIN_YEAR, MAX_YEAR + 1)],
+    #     'Year',
+    #     'GDP',
+    # )
+
+    # # Convert years from string to integers
+    # corr_df['Year'] = pd.to_numeric(corr_df['Year'])
+
+    return corr_df
+
+corr_df = get_corr_data()
+
+df = corr_df.copy()
 
 if "df" not in st.session_state:
     # Make up some fake issue descriptions.
@@ -55,6 +130,7 @@ if "df" not in st.session_state:
         "Customer data not loading in CRM",
         "Collaboration tool not sending notifications",
     ]
+
 
 # Display the DataFrame with sorting and filtering capabilities
 st.dataframe(st.session_state.df, use_container_width=True, hide_index=True)
