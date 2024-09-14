@@ -6,3 +6,4 @@ altair
 pyarrow
 fsspec
 gcsfs
+plotly
