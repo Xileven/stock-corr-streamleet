@@ -37,7 +37,14 @@ def get_corr_data():
 
     # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
     DATA_FILENAME = Path(__file__).parent/'data/corr_data.csv'
-    raw_corr_df = pd.read_csv(DATA_FILENAME)
+    try:
+        raw_corr_df = pd.read_csv(DATA_FILENAME)
+    except FileNotFoundError:
+        st.error(f"File not found: {DATA_FILENAME}")
+        return pd.DataFrame()
+    except Exception as e:
+        st.error(f"Error reading file: {e}")
+        return pd.DataFrame()
     # df = raw_corr_df.copy()
 
     MIN_YEAR = 0
