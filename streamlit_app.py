@@ -40,26 +40,35 @@ data = get_corr_data()
 # Sidebar options for sorting, filtering, and selection
 # st.sidebar.header("Filter Options")
 
-# Filter by pair
-pair_options = st.sidebar.multiselect('Select pairs:', options=data['pair'].unique(), default=data['pair'].unique())
-filtered_data = data[data['pair'].isin(pair_options)]
+# ==========================================================================================
 
-# Sorting
-sort_by = st.sidebar.selectbox('Sort by:', options=filtered_data.columns[1:])
-ascending = st.sidebar.radio("Sort order", ('Ascending', 'Descending'))
+# Collapsible filter and sorting options (previously in sidebar)
+with st.expander("Filter & Sort Options", expanded=True):
+    # Filter by pair
+    pair_options = st.multiselect(
+        'Select pairs (sorted in ascending order):',
+        options=sorted(data['pair'].unique()),  # Sort options in ascending order
+        default=data['pair'].unique()
+    )
+    filtered_data = data[data['pair'].isin(pair_options)]
 
-# Apply sorting
-filtered_data = filtered_data.sort_values(by=sort_by, ascending=(ascending == 'Ascending'))
+    # Sorting
+    sort_by = st.selectbox('Sort by:', options=filtered_data.columns[1:])
+    ascending = st.radio("Sort order", ('Ascending', 'Descending'))
 
-# Main section
-st.title('Correlation Data Viewer')
+    # Apply sorting
+    filtered_data = filtered_data.sort_values(by=sort_by, ascending=(ascending == 'Ascending'))
 
 st.write("### Filtered and Sorted Data")
 st.dataframe(filtered_data)
 
 # Line chart
 st.write("### Line Chart")
-selected_pairs = st.multiselect('Select rows to visualize:', options=filtered_data['pair'], default=filtered_data['pair'][0])
+selected_pairs = st.multiselect(
+    'Select rows to visualize (sorted in ascending order):',
+    options=sorted(filtered_data['pair']),  # Sort in ascending order
+    default=sorted(filtered_data['pair'])[:1]  # Default to the first one
+)
 
 # Plot data for selected pairs
 if selected_pairs:
