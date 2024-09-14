@@ -16,13 +16,6 @@ st.write(
     """
 )
 
-
-# Set the title and favicon that appear in the Browser's tab bar.
-st.set_page_config(
-    page_title='stock correlation',
-    page_icon=':SP500:', # This is an emoji shortcode. Could be a URL too.
-)
-
 # -----------------------------------------------------------------------------
 # Declare some useful functions.
 
