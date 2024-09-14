@@ -43,7 +43,7 @@ data = get_corr_data()
 # ==========================================================================================
 
 # Collapsible filter and sorting options (previously in sidebar)
-with st.expander("Filter & Sort Options", expanded=True):
+with st.expander("Filter & Sort Options", expanded=False):
     # Filter by pair
     pair_options = st.multiselect(
         'Select pairs (sorted in ascending order):',
