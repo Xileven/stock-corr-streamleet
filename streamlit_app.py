@@ -1,19 +1,7 @@
-import datetime
-import random
-from pathlib import Path
-
-import altair as alt
-import numpy as np
-import pandas as pd
 import streamlit as st
-
-import os
-import yfinance as yf
 import pandas as pd
-import numpy as np
-
-from yfinance import Ticker 
-import yfinance as yf
+import math
+from pathlib import Path
 
 st.set_page_config(
     page_title="Stocks Correlation", 
@@ -37,20 +25,11 @@ def get_corr_data():
 
     # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
     DATA_FILENAME = Path(__file__).parent/'data/corr_data.csv'
-    try:
-        raw_corr_df = pd.read_csv(DATA_FILENAME)
-    except FileNotFoundError:
-        st.error(f"File not found: {DATA_FILENAME}")
-        return pd.DataFrame()
-    except Exception as e:
-        st.error(f"Error reading file: {e}")
-        return pd.DataFrame()
-    # df = raw_corr_df.copy()
+    raw_corr_df = pd.read_csv(DATA_FILENAME)
 
     # MIN_YEAR = 0
     # MAX_YEAR = 5
 
-    import pandas as pd
 
     # Assuming the DataFrame is named 'df' and contains all the necessary columns
 
