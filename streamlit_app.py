@@ -38,7 +38,7 @@ def get_corr_data():
 # data = pd.read_csv(data_path)
 data = get_corr_data()
 # Sidebar options for sorting, filtering, and selection
-st.sidebar.header("Filter Options")
+# st.sidebar.header("Filter Options")
 
 # Filter by pair
 pair_options = st.sidebar.multiselect('Select pairs:', options=data['pair'].unique(), default=data['pair'].unique())
@@ -65,4 +65,9 @@ selected_pairs = st.multiselect('Select rows to visualize:', options=filtered_da
 if selected_pairs:
     chart_data = filtered_data[filtered_data['pair'].isin(selected_pairs)]
     chart_data = chart_data.set_index('pair').T
+    
+    # Ensure the x-axis (columns of chart_data) follows the original DataFrame order
+    chart_data.index = pd.Categorical(chart_data.index, categories=filtered_data.columns[1:], ordered=True)
+    chart_data = chart_data.sort_index()
+
     st.line_chart(chart_data)
