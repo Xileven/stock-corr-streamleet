@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import math
 from pathlib import Path
-
+import plotly.express as px
 
 st.set_page_config(
     page_title="Stocks Correlation", 
@@ -41,7 +41,6 @@ data = get_corr_data()
 # st.sidebar.header("Filter Options")
 
 # ==========================================================================================
-
 # Collapsible filter and sorting options (previously in sidebar)
 with st.expander("Filter & Sort Options", expanded=False):
     # Filter by pair
@@ -62,8 +61,8 @@ with st.expander("Filter & Sort Options", expanded=False):
 st.write("### Filtered and Sorted Data")
 st.dataframe(filtered_data)
 
-# Line chart
-st.write("### Line Chart")
+# Line chart with Plotly
+st.write("### Interactive Line Chart")
 selected_pairs = st.multiselect(
     'Select rows to visualize (sorted in ascending order):',
     options=sorted(filtered_data['pair']),  # Sort in ascending order
@@ -72,11 +71,21 @@ selected_pairs = st.multiselect(
 
 # Plot data for selected pairs
 if selected_pairs:
+    # Filter the data for the selected pairs
     chart_data = filtered_data[filtered_data['pair'].isin(selected_pairs)]
+    
+    # Transpose the DataFrame so that the x-axis is the time interval
     chart_data = chart_data.set_index('pair').T
     
-    # Ensure the x-axis (columns of chart_data) follows the original DataFrame order
-    chart_data.index = pd.Categorical(chart_data.index, categories=filtered_data.columns[1:], ordered=True)
-    chart_data = chart_data.sort_index()
-
-    st.line_chart(chart_data)
+    # Create an interactive Plotly line chart
+    fig = px.line(
+        chart_data,
+        labels={'value': 'Correlation', 'index': 'Time Interval'},
+        title="Correlation over Time",
+    )
+    
+    # Add hover info and markers to make lines clickable
+    fig.update_traces(mode='lines+markers', hovertemplate='Time Interval: %{x}<br>Correlation: %{y}<extra></extra>')
+    
+    # Show the interactive Plotly chart in Streamlit
+    st.plotly_chart(fig)
