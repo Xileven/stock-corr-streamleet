@@ -5,3 +5,4 @@ yfinance
 altair
 pyarrow
 fsspec
+gcsfs
