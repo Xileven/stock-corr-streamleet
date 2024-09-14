@@ -19,7 +19,7 @@ st.write(
 # -----------------------------------------------------------------------------
 # Declare some useful functions.
 
-@st.cache_data
+# @st.cache_data
 def get_corr_data():
 
     DATA_FILENAME = Path(__file__).parent/'data/corr_data.csv'
