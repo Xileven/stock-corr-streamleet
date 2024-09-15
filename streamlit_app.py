@@ -14,7 +14,7 @@ st.title("📈 Stock Correlation")
 st.write("Correlation between stocks from Yahoo Finance")
 
 # Cache the data to speed up subsequent loads
-@st.cache_data
+# @st.cache_data
 def get_corr_data():
     DATA_FILENAME = Path(__file__).parent / 'data/corr_data.csv'
 
