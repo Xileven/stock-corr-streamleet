@@ -4,44 +4,37 @@ import math
 from pathlib import Path
 import plotly.express as px
 
+# Set page configuration
 st.set_page_config(
     page_title="Stocks Correlation", 
     page_icon="📈"
 )
 
 st.title("📈 Stock Correlation")
-st.write(
-    """
-    Correlation between stocks from Yahoo Finance
-    """
-)
+st.write("Correlation between stocks from Yahoo Finance")
 
-# -----------------------------------------------------------------------------
-# Declare some useful functions.
-
-# @st.cache_data
+# Cache the data to speed up subsequent loads
+@st.cache_data
 def get_corr_data():
+    DATA_FILENAME = Path(__file__).parent / 'data/corr_data.csv'
 
-    DATA_FILENAME = Path(__file__).parent/'data/corr_data.csv'
+    # Check if the file exists
+    if not DATA_FILENAME.exists():
+        st.error(f"File not found: {DATA_FILENAME}")
+        return pd.DataFrame()  # Return an empty DataFrame if file is not found
+
+    # Load the data
     raw_corr_df = pd.read_csv(DATA_FILENAME)
-
     return raw_corr_df
 
-# corr_df = get_corr_data()
-
-
-
-
-
 # Load the data
-# data_path = 'corr_data.csv'  # Update this if needed
-# data = pd.read_csv(data_path)
 data = get_corr_data()
-# Sidebar options for sorting, filtering, and selection
-# st.sidebar.header("Filter Options")
 
-# ==========================================================================================
-# Collapsible filter and sorting options (previously in sidebar)
+# If data is empty, stop the app
+if data.empty:
+    st.stop()
+
+# Collapsible filter and sorting options
 with st.expander("Filter & Sort Options", expanded=False):
     # Filter by pair
     pair_options = st.multiselect(
